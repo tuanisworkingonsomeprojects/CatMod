@@ -159,8 +159,9 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-*.png
-*.svg
+*logo-32x32.png
+*logo-64x64.png
+*logo-svg.svg
 ipython.1
 test_dataset.csv
 *50d.txt

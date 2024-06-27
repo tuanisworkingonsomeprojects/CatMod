@@ -56,7 +56,7 @@ def get_max_sentence_len(X: str) -> int:
     return max_sentence_len
 
 
-def sentences_to_indices(X: np.array, word_to_index: dict, max_len: int) -> np.array:
+def sentences_to_indices(X: np.array, word_to_index: dict, max_len: int) -> np.ndarray:
     """
     Description:
         Converts an array of sentences (strings) into an array of indices corresponding to words in the sentences.

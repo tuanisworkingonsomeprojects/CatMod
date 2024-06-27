@@ -16,7 +16,7 @@ def read_glove_vec(file_path: str, to_list: bool = False) -> tuple:
     words = set()
     word_to_vec_map = dict()
     
-    with open(file_path, 'r') as f:
+    with open(file_path, 'rb') as f:
         for line in f:
             line = line.strip().split()
             curr_word = line[0]

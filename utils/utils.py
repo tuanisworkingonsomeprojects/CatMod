@@ -8,6 +8,8 @@ from tensorflow.keras.layers import Dense, Input, Dropout, LSTM, Activation
 from tensorflow.keras.layers import Embedding
 from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.initializers import glorot_uniform
+import os
+import json
 
 
 def get_word_to_index(words: list | set, is_index_to_word: bool = False) -> dict | tuple:
@@ -232,14 +234,67 @@ def one_hot_to_category(Y_oh: np.array, idx_to_category: dict):
 
 def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_index: dict, max_len: int):
     
-    if type(X) != list or type(X) != tuple or type(X) != np.ndarray:
-        X = np.array([X])
     
 
-    X_to_indices = sentences_to_indices(np.array(X), word_to_index, max_len)
+    if type(X) == str:
+        X = np.array([X], dtype = str)
+
+    # if type(X) == pd.core.series.Series:
+    #     X = list(X)
+
+    # if type(X) == list or type(X) == tuple:
+    #     X = np.array(X)
+    else:
+        X = np.array(X, dtype = str)
+
+    X_to_indices = sentences_to_indices(X, word_to_index, max_len)
 
     Y_predict_one_hot = model.predict(X_to_indices)
 
     Y_predict_category = one_hot_to_category(Y_predict_one_hot, Y_dict)
 
     return Y_predict_category
+
+
+def export_model_data(file_name, catmod):
+
+    os.system('mkdir ' + file_name)
+    file_name = file_name + '/' + file_name
+
+    with open(file_name + '.weights.h5.txt', 'w') as f:
+            f.writelines(str(catmod.MAX_STRING_LEN) + '\n')
+            f.writelines(str(catmod.num_of_categories))
+
+
+    with open(file_name + '.weights.h5.json', 'w') as f:
+            json_object = json.dumps(catmod.index_to_category)
+            f.write(json_object)
+
+    print('Saving weights', end = '                         \r')
+    catmod.model.save_weights(file_name + '.weights.h5')
+    print('Saved!', end = '                            \r')
+    
+def import_model_data(weights_file, catmod):
+    weights_file = weights_file + '/' + weights_file
+
+
+    with open(weights_file + '.weights.h5.txt', 'r') as f:
+        catmod.MAX_STRING_LEN = int(f.readline())
+        catmod.num_of_categories = int(f.readline())
+
+    with open(weights_file + '.weights.h5.json', 'r') as f:
+        temp_dict = json.load(f)
+        result_dict = {}
+
+        for key, value in temp_dict.items():
+            result_dict[int(key)] = value
+        print(result_dict)
+        catmod.index_to_category = result_dict
+
+    catmod.load_model()
+
+    print('Loading Weight...', end = '                           \r')
+    
+
+    catmod.model.load_weights(weights_file + '.weights.h5')
+    print('Loaded!', end = '                               \r')

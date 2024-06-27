@@ -11,7 +11,8 @@ import numpy as np
 import tensorflow as tf
 from utils.utils import *
 from utils.load_and_process_utils import *
-
+import os
+import json
 
 
 # Main Class
@@ -153,10 +154,10 @@ class CatMod:
             None
         
         '''
+        import_model_data(weights_file, self)
 
-        print('Loading Weight...', end = '                           \r')
-        self.model.load_weights()
-        print('Loaded!', end = '                               \r')
+
+
 
     def train(self, epochs: int = 50) -> None:
         '''
@@ -186,11 +187,7 @@ class CatMod:
         Returns:
             None
         '''
-
-
-        print('Saving weights', end = '                         \r')
-        self.model.save_weights(file_name + '.weights.h5')
-        print('Saved!', end = '                            \r')
+        export_model_data(file_name, self)
 
 
     def evaluate(self) -> None:
@@ -229,6 +226,7 @@ class CatMod:
         return return_Y
     
     def print_test(self):
-        print(__name__)
+        print()
+        export_model_data("asdfasdf",self)
     
     

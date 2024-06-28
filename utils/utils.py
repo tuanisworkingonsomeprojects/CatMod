@@ -10,6 +10,7 @@ from tensorflow.keras.preprocessing import sequence
 from tensorflow.keras.initializers import glorot_uniform
 import os
 import json
+import shutil
 
 
 def get_word_to_index(words: list | set, is_index_to_word: bool = False) -> dict | tuple:
@@ -257,6 +258,8 @@ def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_in
 
 
 def export_model_data(file_name, catmod):
+    dest_folder = file_name + '/'
+
 
     os.system('mkdir ' + file_name)
     file_name = file_name + '/' + file_name
@@ -272,10 +275,17 @@ def export_model_data(file_name, catmod):
 
     print('Saving weights', end = '                         \r')
     catmod.model.save_weights(file_name + '.weights.h5')
+
+    print('Exporting GloVe File...', end = '                        \r')
+    shutil.copyfile(catmod.glove_file, dest_folder + 'glove.txt')
+
+
     print('Saved!', end = '                            \r')
     
 def import_model_data(weights_file, catmod):
+    dest_folder = weights_file + '/'
     weights_file = weights_file + '/' + weights_file
+    
 
 
     with open(weights_file + '.weights.h5.txt', 'r') as f:
@@ -288,7 +298,7 @@ def import_model_data(weights_file, catmod):
 
         for key, value in temp_dict.items():
             result_dict[int(key)] = value
-        print(result_dict)
+            
         catmod.index_to_category = result_dict
 
     catmod.load_model()

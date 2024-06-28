@@ -21,6 +21,7 @@ class CatMod:
     
 
     MAX_STRING_LEN = 0
+    glove_file = None
     
 
     X, Y, X_train, Y_train, X_test, Y_test, X_train_idx, Y_train_idx, Y_train_oh, X_test_idx, Y_test_idx, Y_test_oh = None, None, None, None, None, None, None, None, None, None, None, None
@@ -39,7 +40,7 @@ class CatMod:
 
 
     
-    def __init__(self, glove_file_path: str, model: tf.keras.Model = None) -> None:
+    def __init__(self, glove_file_path: str = None, model: tf.keras.Model = None, load_mode = False, load_file = None) -> None:
         '''
         Description:
             This is the constructor of the CatMod Class which will need the Word_to_Vec Embedding File as an input
@@ -53,15 +54,23 @@ class CatMod:
             None
         '''
 
+        if load_mode:
+            assert load_file != None, "Please provide a load file name"
+            self.glove_file = load_file + '/glove.txt'
+        else:
+            assert glove_file_path != None, "Please provide a GloVe file name"
+            self.glove_file = glove_file_path
 
         self.model = model
 
         print('Loading word to vector map...', end = '                               \r')
-        self.words, self.word_to_vec_map = read_glove_vec(glove_file_path)
+        self.words, self.word_to_vec_map = read_glove_vec(self.glove_file)
 
         print('Creating word to index dictionary...', end = '                          \r')
         self.word_to_index, self.index_to_word = get_word_to_index(self.words, is_index_to_word = True)
 
+        if load_mode:
+            self.load_weights(load_file)
 
         print('CatMod instance created!                 ')
 
@@ -107,7 +116,7 @@ class CatMod:
         self.Y_test_oh = convert_to_one_hot(self.Y_test_idx, self.num_of_categories)
 
 
-    def load_model(self):
+    def load_model(self, csv_file = None, X_column = None, Y_column = None):
         '''
         Description:
             This function will load the pre-defined model in the utils.Categorical_Model into the instance
@@ -118,14 +127,15 @@ class CatMod:
         Returns:
             None
         '''
+        if csv_file != None:
+            self.load_csv(csv_file, X_column, Y_column)
 
-
-        print('Loading model...', end = '                          \r')
+        print('Loading model...', end = '                                                                 \r')
         self.model = Categorical_Model((self.MAX_STRING_LEN,), self.word_to_vec_map, self.word_to_index, self.num_of_categories)
 
-        print('Compiling model...', end =  '                       \r')
+        print('Compiling model...', end =  '                                                          \r')
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-        print('Model Compiled Successfully!', end = '                       \r')
+        print('Model Compiled Successfully!', end = '                                                   \r')
 
     def get_model_summary(self):
         '''

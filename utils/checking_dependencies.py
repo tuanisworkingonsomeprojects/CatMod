@@ -8,7 +8,7 @@ def checking_dependencies():
     except ModuleNotFoundError as e:
         print('numpy not found!', end = '                        \r')
         print('installing numpy...', end = '                        \r')
-        os.system("pip install numpy")
+        os.system("pip install numpy==1.26.4")
         print('numpy installed!', end = '                        \r')
 
     try:
@@ -18,7 +18,7 @@ def checking_dependencies():
     except ModuleNotFoundError as e:
         print('pandas not found!', end = '                        \r')
         print('installing pandas...', end = '                        \r')
-        os.system("pip install pandas")
+        os.system("pip install pandas==2.2.2")
         print('pandas installed!', end = '                        \r')
 
     try:
@@ -39,7 +39,7 @@ def checking_dependencies():
     except ModuleNotFoundError as e:
         print('sklearn not found!', end = '                        \r')
         print('installing sklearn...', end = '                        \r')
-        os.system("pip install scikit-learn")
+        os.system("pip install scikit-learn==1.5.0")
         print('sklearn installed!', end = '                        \r')
 
     print('Dependencies Checking Completed!', end = '                             \r')

@@ -186,7 +186,7 @@ def pretrained_embedding_layer(word_to_vec_map: dict, word_to_index: dict) -> tf
     return embedding_layer
 
 
-def Categorical_Model(input_shape, word_to_vec_map, word_to_index, num_of_category):
+def Categorical_Model(input_shape, word_to_vec_map, word_to_index, num_of_category, num_of_LSTM = 2):
 
     '''
     
@@ -202,9 +202,38 @@ def Categorical_Model(input_shape, word_to_vec_map, word_to_index, num_of_catego
 
     embeddings = embedding_layer(sentence_indices)
 
-    X = LSTM(units = 128, return_sequences = True)(embeddings)
+    X = embeddings
 
-    X = Dropout(rate = 0.5)(X)
+    for i in range(num_of_LSTM):
+
+        X = LSTM(units = 128, return_sequences = True)(X)
+
+        X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
+    # X = LSTM(units = 128, return_sequences = True)(embeddings)
+
+    # X = Dropout(rate = 0.5)(X)
+
 
     X = LSTM(units = 128)(X)
 
@@ -266,7 +295,8 @@ def export_model_data(file_name, catmod):
 
     with open(file_name + '.weights.h5.txt', 'w') as f:
             f.writelines(str(catmod.MAX_STRING_LEN) + '\n')
-            f.writelines(str(catmod.num_of_categories))
+            f.writelines(str(catmod.num_of_categories + '\n'))
+            f.writelines(str(catmod.num_of_LSTM))
 
 
     with open(file_name + '.weights.h5.json', 'w') as f:
@@ -291,6 +321,7 @@ def import_model_data(weights_file, catmod):
     with open(weights_file + '.weights.h5.txt', 'r') as f:
         catmod.MAX_STRING_LEN = int(f.readline())
         catmod.num_of_categories = int(f.readline())
+        catmod.num_of_LSTM = int(f.readline())
 
     with open(weights_file + '.weights.h5.json', 'r') as f:
         temp_dict = json.load(f)

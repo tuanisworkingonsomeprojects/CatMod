@@ -38,12 +38,12 @@ cat = CatMod('[your_file_path]')
 e.g.
 ```python
 file_path = 'C:/User/Desktop/glove.6B.50d.txt'
-cat = CatMod(file_path)
+cat = CatMod(glove_file = file_path)
 ```
 
 ```python
 file_path = 'Machintosh HD/Users/yourName/Desktop/glove.6B.50d.txt'
-cat = CatMode(file_path)
+cat = CatMode(glove_file = file_path)
 ```
 
 ### Training Process
@@ -78,6 +78,15 @@ e.g.
 cat.load_model('product.csv', 'product name', 'category')
 ```
 
+We can also specified how many LSTM layers you want by adding the corresponding parameter.
+```python
+cat.load_model('product.csv', 'product name', 'category', num_of_LSTM = 4)
+```
+
+
+
+
+
 Then we just do one more easy step:
 ```python
 cat.train([number_of_iterations])
@@ -92,4 +101,47 @@ e.g.
 cat.train() # 50 iterations
 ```
 
+### Save Weights
+After training you can save your model on your local machine by using `.save_weights([name])` method. <i>(No file name suffix is needed)</i>
 
+```python
+cat.save_weights('my_model')
+```
+
+If the model is saved successfully we will see the folder appear in the same folder of your project
+```
+ProjectFolder
+|---main.py
+|---catmod.py
+|---utils
+|   |---...
+|   |
+|
+|---my_model
+|   |---...
+|   |
+|
+...
+```
+
+### Load Pre-Trained Model
+When we have saved the training file, we can reuse it in the future by just loading it back to a new instance.<br>
+There are 2 ways of doing it.
+
+The <b>RECOMMENDED</b> way:
+```python
+from catmod import CatMod
+
+new_cat = CatMod(load_mode = True, load_file = 'my_model')
+```
+
+The other way:
+```python
+from catmod import CatMod
+
+new_cat = CatMod(glove_file_path = [the_GloVe_file_path_but_it_must_have_the_same_dimension_with_the_pre_trained_model])
+
+new_cat.load_weights('my_model')
+```
+
+### Prediction

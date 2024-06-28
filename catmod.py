@@ -38,6 +38,8 @@ class CatMod:
 
     num_of_categories = 0
 
+    num_of_LSTM = 2
+
 
     
     def __init__(self, glove_file_path: str = None, model: tf.keras.Model = None, load_mode = False, load_file = None) -> None:
@@ -116,7 +118,7 @@ class CatMod:
         self.Y_test_oh = convert_to_one_hot(self.Y_test_idx, self.num_of_categories)
 
 
-    def load_model(self, csv_file = None, X_column = None, Y_column = None):
+    def load_model(self, csv_file = None, X_column = None, Y_column = None, num_of_LSTM = 2):
         '''
         Description:
             This function will load the pre-defined model in the utils.Categorical_Model into the instance
@@ -127,11 +129,13 @@ class CatMod:
         Returns:
             None
         '''
+        self.num_of_LSTM = num_of_LSTM
+
         if csv_file != None:
             self.load_csv(csv_file, X_column, Y_column)
 
         print('Loading model...', end = '                                                                 \r')
-        self.model = Categorical_Model((self.MAX_STRING_LEN,), self.word_to_vec_map, self.word_to_index, self.num_of_categories)
+        self.model = Categorical_Model((self.MAX_STRING_LEN,), self.word_to_vec_map, self.word_to_index, self.num_of_categories, num_of_LSTM = num_of_LSTM)
 
         print('Compiling model...', end =  '                                                          \r')
         self.model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -217,7 +221,7 @@ class CatMod:
         print("Test accuracy = ", acc)
 
 
-    def predict(self, X: list | str) -> np.ndarray:
+    def predict(self, X: list | str, to_df = False, to_csv = False, to_excel = False, file_name = None) -> np.ndarray:
         '''
         Desctiption:
             This method will allow the model to predict the provided string or list of string and return the appropriate predicted category / categories
@@ -233,10 +237,31 @@ class CatMod:
 
         print('Predicting...')
         return_Y = from_X_to_Y_predict(X, self.index_to_category, self.model, self.word_to_index, self.MAX_STRING_LEN)
+        
+
+        if to_df:
+            return pd.DataFrame({
+                'X': X,
+                'Y': return_Y
+            })
+        
+        if to_csv:
+            return pd.DataFrame({
+                'X': X,
+                'Y': return_Y
+            }).to_csv(file_name + '.csv', index = False)
+
+        if to_excel:
+            return pd.DataFrame({
+                'X': X,
+                'Y': return_Y
+            }).to_csv(file_name + '.csv').to_excel(file_name + '.xlsx', index = False)
+
         return return_Y
+    
+
     
     def print_test(self):
         print()
         export_model_data("asdfasdf",self)
-    
     

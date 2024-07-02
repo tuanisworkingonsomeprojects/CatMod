@@ -221,7 +221,7 @@ class CatMod:
         print("Test accuracy = ", acc)
 
 
-    def predict(self, X: list | str, to_df = False, to_csv = False, to_excel = False, file_name = None) -> np.ndarray:
+    def predict(self, X: list | str, to_df = False, to_csv = False, to_excel = False, file_name = None, X_name = 'X', Y_name = 'Y') -> np.ndarray:
         '''
         Desctiption:
             This method will allow the model to predict the provided string or list of string and return the appropriate predicted category / categories
@@ -241,20 +241,20 @@ class CatMod:
 
         if to_df:
             return pd.DataFrame({
-                'X': X,
-                'Y': return_Y
+                X_name: X,
+                Y_name: return_Y
             })
         
         if to_csv:
             return pd.DataFrame({
-                'X': X,
-                'Y': return_Y
+                X_name: X,
+                Y_name: return_Y
             }).to_csv(file_name + '.csv', index = False)
 
         if to_excel:
             return pd.DataFrame({
-                'X': X,
-                'Y': return_Y
+                X_name: X,
+                Y_name: return_Y
             }).to_csv(file_name + '.csv').to_excel(file_name + '.xlsx', index = False)
 
         return return_Y

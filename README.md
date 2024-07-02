@@ -145,3 +145,11 @@ new_cat.load_weights('my_model')
 ```
 
 ### Prediction
+Prediction the the most easiest and provide many customization so that everyone can predict and export the predict result in .pd, .csv, .xlsx at their own need.
+e.g.
+```python
+X = df['X']
+new_cat.predict(X, to_csv = True)
+```
+The result will export out the csv file that have both column X and Y together.
+

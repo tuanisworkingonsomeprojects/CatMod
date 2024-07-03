@@ -1,4 +1,4 @@
-from utils.checking_dependencies import *
+from .utils.checking_dependencies import *
 # Checking System Section
 if __name__ != '__main__':
     checking_dependencies()
@@ -9,8 +9,8 @@ from tensorflow.keras.models import Model
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-from utils.utils import *
-from utils.load_and_process_utils import *
+from .utils.utils import *
+from .utils.load_and_process_utils import *
 import os
 import json
 

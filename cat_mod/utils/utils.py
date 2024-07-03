@@ -295,7 +295,7 @@ def export_model_data(file_name, catmod):
 
     with open(file_name + '.weights.h5.txt', 'w') as f:
             f.writelines(str(catmod.MAX_STRING_LEN) + '\n')
-            f.writelines(str(catmod.num_of_categories + '\n'))
+            f.writelines(str(catmod.num_of_categories) + '\n')
             f.writelines(str(catmod.num_of_LSTM))
 
 

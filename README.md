@@ -28,7 +28,7 @@ ProjectFolder
 
 - Import `CatMod` in your python file.
 ```python
-from catmod import CatMod
+from cat_mod import CatMod
 ```
 
 - Instanciate a new instance with a <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a>.

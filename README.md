@@ -11,29 +11,23 @@ More and more people want to train, test and deploy NLP classification model wit
 - If you don't mind about the version of the libraries listed in the `requirements.txt` you can leave it as it is.
 
 ## How to use
-- Please clone or <a href='https://github.com/tuanisworkingonsomeprojects/CatMod/archive/refs/heads/main.zip'>download</a> this repository to your project folder, please assure that `catmod.py` file stay in the same folder of your python main file <i>(The file in which you want to import `CatMod`)</i>
-
-e.g.
+- You can you pip install to download the project down to your computer.
 ```
-ProjectFolder
-|---main.py
-|---catmod.py
-|---utils
-|   |----...
-|   |
-...
+pip install cat-mod
 ```
-- Download <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a> to the desired foler.
-
-
 - Import `CatMod` in your python file.
 ```python
 from cat_mod import CatMod
 ```
 
+
+- Download <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a> to the desired foler.
+
+
+
 - Instanciate a new instance with a <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a>.
 ```python
-cat = CatMod('[your_file_path]')
+cat = CatMod('[your_GloVe_file_path]')
 ```
 e.g.
 ```python
@@ -112,11 +106,6 @@ If the model is saved successfully we will see the folder appear in the same fol
 ```
 ProjectFolder
 |---main.py
-|---catmod.py
-|---utils
-|   |---...
-|   |
-|
 |---my_model
 |   |---...
 |   |

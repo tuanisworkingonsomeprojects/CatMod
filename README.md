@@ -3,15 +3,15 @@
 ## Short introduction
 - In a modern word that required fast robust and simple development process with Machine Learning, AI and Deep Learning, there are countless of projects require Natural Language Processing (NLP) classification problems such as <i>Commodity Classification, Company Type Classification, Food Type classification, etc.</i><br>
 More and more people want to train, test and deploy NLP classification model without having to know the background of advanced in programming and AI knowledge.
-- This Framework will allow everyone to train, test and save and load their own model and deploy it wherever they want with some simple lines of code.
+- This Framework will allow everyone to train, test, save and load their own model and deploy it wherever they want with some simple lines of code.
 
 
 ## Virtual Enviroment / Dependencies
-- It is recommended to create a vitual enviroment for your project when using `CatMod` as it will download and install packages and dependencies that might conflict with your dependencies on your machine.
+- It is recommended to create a virtual environment for your project when using `CatMod` as it will download and install packages and dependencies that might conflict with your dependencies on your machine.
 - If you don't mind about the version of the libraries listed in the `requirements.txt` you can leave it as it is.
 
 ## How to use
-- You can you pip install to download the project down to your computer.
+- You can you pip install to download the project on your computer.
 ```
 pip install cat-mod
 ```
@@ -21,7 +21,7 @@ from cat_mod import CatMod
 ```
 
 
-- Download <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a> to the desired foler.
+- Download <a href='https://www.kaggle.com/datasets/watts2/glove6b50dtxt'>GloVe Embedded Vectors File</a> to the desired folder.
 
 
 
@@ -63,7 +63,7 @@ cat.load_model()
 ```
 
 OR 
-
+THE <b>RECOMMENDED</b> WAY
 ```python
 cat.load_model('[your_csv_file_path]', '[X_column_name]', '[Y_column_name]')
 ```
@@ -72,7 +72,7 @@ e.g.
 cat.load_model('product.csv', 'product name', 'category')
 ```
 
-We can also specified how many LSTM layers you want by adding the corresponding parameter.
+We can also specify how many LSTM layers you want by adding the corresponding parameter.
 ```python
 cat.load_model('product.csv', 'product name', 'category', num_of_LSTM = 4)
 ```
@@ -89,7 +89,7 @@ e.g.
 ```python
 cat.train(10)
 ```
-<i>If the number of iterations is not specified the number of iteration is 50.</i>
+<i>If the number of iterations is not specified, the number of iteration is 50.</i>
 e.g.
 ```python
 cat.train() # 50 iterations

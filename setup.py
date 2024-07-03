@@ -6,7 +6,7 @@ with open('README.md', 'r') as f:
 
 setup(
     name = 'cat_mod',
-    version = '0.2.0',
+    version = '0.3.0',
     packages = find_packages(),
     install_requires = [
         'numpy==1.26.4',

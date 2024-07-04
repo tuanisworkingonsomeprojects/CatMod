@@ -119,14 +119,14 @@ There are 2 ways of doing it.
 
 The <b>RECOMMENDED</b> way:
 ```python
-from catmod import CatMod
+from cat_mod import CatMod
 
 new_cat = CatMod(load_mode = True, load_file = 'my_model')
 ```
 
 The other way:
 ```python
-from catmod import CatMod
+from cat_mod import CatMod
 
 new_cat = CatMod(glove_file_path = [the_GloVe_file_path_but_it_must_have_the_same_dimension_with_the_pre_trained_model])
 
@@ -138,7 +138,7 @@ Prediction the the most easiest and provide many customization so that everyone 
 e.g.
 ```python
 X = df['X']
-new_cat.predict(X, to_csv = True)
+new_cat.predict(X, to_csv = True, file_name = 'my_prediction')
 ```
 The result will export out the csv file that have both column X and Y together.
 

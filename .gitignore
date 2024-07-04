@@ -166,3 +166,5 @@ ipython.1
 test_dataset.csv
 *50d.txt
 .pypirc
+test.*
+test*

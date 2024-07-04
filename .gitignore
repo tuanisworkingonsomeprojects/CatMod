@@ -169,3 +169,5 @@ test_dataset.csv
 test.*
 test*
 test.ipynb
+.vscode/*
+catmod/*

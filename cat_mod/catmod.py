@@ -99,6 +99,11 @@ class CatMod:
         print('Spliting Datset to X and Y...', end = '                            \r')
         self.X, self.Y = dataset_to_XY(self.dataset)
 
+        utf8_handler = np.vectorize(lambda x: x.encode('utf-8'))
+
+
+        self.X = utf8_handler(self.X)
+
         print('Get the longest string in X (based on number of words)...', end = '                         \r')
         self.MAX_STRING_LEN = get_max_sentence_len(self.X)
 

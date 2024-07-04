@@ -67,8 +67,8 @@ def dataset_to_XY(df: pd.DataFrame) -> np.array:
     '''
 
 
-    X = np.asarray(df['X'].apply(str.lower), dtype = '<U52')
-    Y = np.asarray(df['Y'].apply(str.lower), dtype = '<U52')
+    X = np.asarray(df['X'].apply(str.lower), dtype = 'str')
+    Y = np.asarray(df['Y'].apply(str.lower), dtype = 'str')
 
     return X, Y
 

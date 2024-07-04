@@ -55,7 +55,14 @@ def get_max_sentence_len(X: str) -> int:
     '''
 
 
-    max_sentence_len = len(max(X, key = lambda x: len(x.split())).split())
+    max_sentence_len = len(
+        max(
+            X, 
+            key = lambda x: len(
+                x.lower().split()
+            )
+        ).split()
+    )
     return max_sentence_len
 
 
@@ -92,8 +99,22 @@ def sentences_to_indices(X: np.array, word_to_index: dict, max_len: int) -> np.n
         j = 0
         for w in sentence_words:
             if w in word_to_index.keys():
-                X_indices[i, j] = word_to_index[w]
-                j += 1
+                try:
+                    X_indices[i, j] = word_to_index[w]
+                    j += 1
+                except IndexError as e:
+                    print('###################################################')
+                    print('\n\n\n\n')
+                    print('max len:', max_len)
+                    print('sentence len:', len(sentence_words))
+                    print('i:', i)
+                    print('j:', j)
+                    print('word:', w)
+                    print('word_to_index:', word_to_index[w])
+                    print('sentence:')
+                    print(sentence_words)
+                    print('\n\n\n\n')
+                    print('#################################################')
 
     return X_indices
 
@@ -255,6 +276,9 @@ def one_hot_to_category(Y_oh: np.array, idx_to_category: dict):
     m = Y_oh.shape[0]
 
     for i in range(m):
+
+
+
         category_idx = np.argmax(Y_oh[i])
         result_ls.append(idx_to_category[category_idx])
 
@@ -264,10 +288,12 @@ def one_hot_to_category(Y_oh: np.array, idx_to_category: dict):
 
 def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_index: dict, max_len: int):
     
-    
+    utf8_handler = np.vectorize(lambda x: x.encode('utf-8'))
 
     if type(X) == str:
+        
         X = np.array([X], dtype = str)
+        X = utf8_handler(X)
 
     # if type(X) == pd.core.series.Series:
     #     X = list(X)
@@ -276,8 +302,12 @@ def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_in
     #     X = np.array(X)
     else:
         X = np.array(X, dtype = str)
+        X = utf8_handler(X)
+        # X = np.array(X)
 
     X_to_indices = sentences_to_indices(X, word_to_index, max_len)
+
+
 
     Y_predict_one_hot = model.predict(X_to_indices)
 

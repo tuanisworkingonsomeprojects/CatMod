@@ -11,6 +11,7 @@ from tensorflow.keras.initializers import glorot_uniform
 import os
 import json
 import shutil
+from predicting import *
 
 
 def get_word_to_index(words: list | set, is_index_to_word: bool = False) -> dict | tuple:
@@ -288,26 +289,9 @@ def one_hot_to_category(Y_oh: np.array, idx_to_category: dict):
 
 def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_index: dict, max_len: int):
     
-    utf8_handler = np.vectorize(lambda x: x.encode('utf-8'))
-
-    if type(X) == str:
-        
-        X = np.array([X], dtype = str)
-        X = utf8_handler(X)
-
-    # if type(X) == pd.core.series.Series:
-    #     X = list(X)
-
-    # if type(X) == list or type(X) == tuple:
-    #     X = np.array(X)
-    else:
-        X = np.array(X, dtype = str)
-        X = utf8_handler(X)
-        # X = np.array(X)
+    X = np_array_converter(X)
 
     X_to_indices = sentences_to_indices(X, word_to_index, max_len)
-
-
 
     Y_predict_one_hot = model.predict(X_to_indices)
 

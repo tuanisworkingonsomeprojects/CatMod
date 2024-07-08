@@ -10,6 +10,9 @@ from . import cleaning
 print('Importing predicting...', end = '                                                         \r')
 from . import predicting
 
+print('Importing datapipeline...', end = '                                                       \r')
+from . import data_pipeline
+
 print('Importing other utils...', end = '                                                        \r')
 from . import utils
 

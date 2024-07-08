@@ -11,7 +11,7 @@ from tensorflow.keras.initializers import glorot_uniform
 import os
 import json
 import shutil
-from predicting import *
+from .predicting import *
 
 
 def get_word_to_index(words: list | set, is_index_to_word: bool = False) -> dict | tuple:
@@ -52,7 +52,7 @@ def get_max_sentence_len(X: str) -> int:
         X (str): A training or testing or the whole dataset
 
     returns:
-        max_sentence_len (int): A maximum length of the longest input sentence
+        max_sentence_len (int): A maximum length (maximum number of words) of the longest input sentence
     '''
 
 
@@ -173,7 +173,9 @@ def pretrained_embedding_layer(word_to_vec_map: dict, word_to_index: dict) -> tf
         emb_dim = word_to_vec_map[anyword].shape[0]     # The length of the vector of the word
                 = 50                                    # GloVe dimension
 
-
+    
+    -----------------------------------------------------------------------------------------------------
+                
         ^
         |
         |
@@ -353,3 +355,4 @@ def import_model_data(weights_file, catmod):
 
     catmod.model.load_weights(weights_file + '.weights.h5')
     print('Loaded!', end = '                               \r')
+

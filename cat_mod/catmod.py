@@ -20,25 +20,35 @@ class CatMod:
 
     
 
-    MAX_STRING_LEN = 0
-    glove_file = None
+    MAX_STRING_LEN: int = 0
+    glove_file: str = None
     
+    X: np.ndarray = None # shape: (number_of_examples, )
+    Y: np.ndarray = None # shape: (number_of_examples, )
+    X_train: np.ndarray = None # shape: (number_of_training_examples, )
+    Y_train: np.ndarray = None # shape: (number_of_training_examples, )
+    X_test: np.ndarray = None  # shape: (number_of_testing_examples, )
+    Y_test: np.ndarray = None  # shape: (number_of_testing_examples, )
+    X_train_idx: np.ndarray = None # shape: (number_of_training_examples, MAX_STRING_LEN)
+    Y_train_idx: np.ndarray = None # shape: (number_of_training_examples, )
+    Y_train_oh: np.ndarray = None  # shape: (number_of_training_examples, number_of_categories)
+    X_test_idx: np.ndarray = None  # shape: (number_of_testing_examples, MAX_STRING_LEN)
+    Y_test_idx: np.ndarray = None  # shape: (number_of_testing_examples, )
+    Y_test_oh: np.ndarray = None   # shape: (number_of_testing_examples, number_of_categories)
 
-    X, Y, X_train, Y_train, X_test, Y_test, X_train_idx, Y_train_idx, Y_train_oh, X_test_idx, Y_test_idx, Y_test_oh = None, None, None, None, None, None, None, None, None, None, None, None
+    dataset: pd.DataFrame = None
 
-    dataset = None
+    words: list | set = None
+    word_to_vec_map: dict = None
 
-    words = None
-    word_to_vec_map = None
+    word_to_index: dict = None
+    index_to_word: dict = None
 
-    word_to_index = None
-    index_to_word = None
+    index_to_category: dict = None
 
-    index_to_category = None
+    num_of_categories: int = 0
 
-    num_of_categories = 0
-
-    num_of_LSTM = 2
+    num_of_LSTM: int = 2
 
 
     
@@ -77,6 +87,25 @@ class CatMod:
         print('CatMod instance created!                 ')
 
 
+
+    def get_shape(self):
+        print('X:', self.X.shape)
+        print('Y:', self.Y.shape)
+        print('X_train:', self.X_train.shape)
+        print('Y_train:', self.Y_train.shape)
+        print('X_train_idx:', self.X_train_idx.shape)
+        print('Y_train_idx:', self.Y_train_idx.shape)
+        print('Y_train_oh:', self.Y_train_oh.shape)
+        print('X_test:', self.X_test.shape)
+        print('Y_test:', self.Y_test.shape)
+        print('X_test_idx:', self.X_test_idx.shape)
+        print('Y_test_idx:', self.Y_test_idx.shape)
+        print('Y_test_oh:', self.Y_test_oh.shape)
+
+
+
+
+
     def load_csv(self, file_path: str, X_column_name: str, Y_column_name: str, dropna = True) -> None:
         '''
         Description:
@@ -98,6 +127,8 @@ class CatMod:
 
         print('Spliting Datset to X and Y...', end = '                            \r')
         self.X, self.Y = dataset_to_XY(self.dataset)
+
+        
 
         utf8_handler = np.vectorize(lambda x: x.encode('utf-8'))
 

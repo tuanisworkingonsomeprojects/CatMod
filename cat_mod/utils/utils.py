@@ -304,13 +304,10 @@ def one_hot_to_category(Y_oh: np.array, idx_to_category: dict):
 
 
 
-def from_X_to_Y_predict(X: list, Y_dict: dict, model: tf.keras.Model, word_to_index: dict, max_len: int):
-    
-    X = np_array_converter(X)
+def from_X_to_Y_predict(X_idx: np.ndarray, Y_dict: dict, model: tf.keras.Model, word_to_index: dict, max_len: int):
 
-    X_to_indices = sentences_to_indices(X, word_to_index, max_len)
 
-    Y_predict_one_hot = model.predict(X_to_indices)
+    Y_predict_one_hot = model.predict(X_idx)
 
     Y_predict_category = one_hot_to_category(Y_predict_one_hot, Y_dict)
 

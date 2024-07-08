@@ -298,7 +298,8 @@ class CatMod:
 
 
         print('Predicting...')
-        return_Y = from_X_to_Y_predict(X, self.index_to_category, self.model, self.word_to_index, self.MAX_STRING_LEN)
+        X_idx = pipeline(X, training_predicting = 'predicting', word_to_index = self.word_to_index, max_len = self.MAX_STRING_LEN, preprocess = False)
+        return_Y = from_X_to_Y_predict(X_idx, self.index_to_category, self.model, self.word_to_index, self.MAX_STRING_LEN)
         
 
         if to_df:

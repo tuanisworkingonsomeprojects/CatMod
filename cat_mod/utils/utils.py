@@ -88,6 +88,12 @@ def sentences_to_indices(X: np.array, word_to_index: dict, max_len: int) -> np.n
     # Initialize the X_indices matrix
     X_indices = np.zeros((m, max_len))
 
+
+
+    not_hit = 0
+
+
+
     # Loop over each sentences in the dataset
     for i in range(m):
 
@@ -100,22 +106,33 @@ def sentences_to_indices(X: np.array, word_to_index: dict, max_len: int) -> np.n
         j = 0
         for w in sentence_words:
             if w in word_to_index.keys():
-                try:
-                    X_indices[i, j] = word_to_index[w]
-                    j += 1
-                except IndexError as e:
-                    print('###################################################')
-                    print('\n\n\n\n')
-                    print('max len:', max_len)
-                    print('sentence len:', len(sentence_words))
-                    print('i:', i)
-                    print('j:', j)
-                    print('word:', w)
-                    print('word_to_index:', word_to_index[w])
-                    print('sentence:')
-                    print(sentence_words)
-                    print('\n\n\n\n')
-                    print('#################################################')
+
+
+
+                X_indices[i, j] = word_to_index[w]
+                j += 1
+                
+                # try:
+                #     X_indices[i, j] = word_to_index[w]
+                #     j += 1
+                # except IndexError as e:
+                #     print('###################################################')
+                #     print('\n\n\n\n')
+                #     print('max len:', max_len)
+                #     print('sentence len:', len(sentence_words))
+                #     print('i:', i)
+                #     print('j:', j)
+                #     print('word:', w)
+                #     print('word_to_index:', word_to_index[w])
+                #     print('sentence:')
+                #     print(sentence_words)
+                #     print('\n\n\n\n')
+                #     print('#################################################')
+    #         else:
+    #             not_hit += 1
+    # print('not hit:', not_hit)
+
+
 
     return X_indices
 
@@ -230,9 +247,7 @@ def Categorical_Model(input_shape, word_to_vec_map, word_to_index, num_of_catego
 
     for i in range(num_of_LSTM):
 
-        X = LSTM(units = 128, return_sequences = True)(X)
-
-        X = Dropout(rate = 0.5)(X)
+        X = LSTM(units = 128, dropout = 0.5, return_sequences = True)(X)
 
     # X = LSTM(units = 128, return_sequences = True)(embeddings)
 
@@ -263,9 +278,9 @@ def Categorical_Model(input_shape, word_to_vec_map, word_to_index, num_of_catego
 
     X = Dropout(rate = 0.5)(X)
 
-    X = Dense(units = num_of_category)(X)
+    X = Dense(units = 64, activation = 'relu')(X)
 
-    X = Activation('softmax')(X)
+    X = Dense(units = num_of_category, activation = 'softmax')(X)
 
     model = Model(inputs = sentence_indices, outputs = X)
 

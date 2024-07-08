@@ -13,6 +13,8 @@ from .utils.utils import *
 from .utils.load_and_process_utils import *
 import os
 import json
+from .utils.cleaning import *
+from .utils.data_pipeline import *
 
 
 # Main Class
@@ -128,22 +130,46 @@ class CatMod:
         print('Spliting Datset to X and Y...', end = '                            \r')
         self.X, self.Y = dataset_to_XY(self.dataset)
 
-        
-
-        utf8_handler = np.vectorize(lambda x: x.encode('utf-8'))
 
 
-        self.X = utf8_handler(self.X)
+
+
+
+
+
+
+
+
+        print('Going under pipeline...', end = '                                             \r')
+        self.X = pipeline(self.X, training_predicting = 'training', word_to_index = self.word_to_index, preprocess = True)
+
+
+
+
+
+
+
+
+
+
+
 
         print('Get the longest string in X (based on number of words)...', end = '                         \r')
         self.MAX_STRING_LEN = get_max_sentence_len(self.X)
 
+
         print('Creating X, Y training and testing dataset...', end = '                                      \r')
         self.X_train, self.Y_train, self.X_test, self.Y_test = get_train_test_dataset(self.dataset, to_XY = True)
 
+        # print('Indexing X_train and X_test dataset...', end = '                                 \r')
+        # self.X_train_idx = sentences_to_indices(self.X_train, self.word_to_index, max_len = self.MAX_STRING_LEN)
+        # self.X_test_idx = sentences_to_indices(self.X_test, self.word_to_index, max_len = self.MAX_STRING_LEN)
+
+
         print('Indexing X_train and X_test dataset...', end = '                                 \r')
-        self.X_train_idx = sentences_to_indices(self.X_train, self.word_to_index, max_len = self.MAX_STRING_LEN)
-        self.X_test_idx = sentences_to_indices(self.X_test, self.word_to_index, max_len = self.MAX_STRING_LEN)
+        self.X_train_idx = pipeline(self.X_train, 'training', self.word_to_index, self.MAX_STRING_LEN)
+        self.X_test_idx  = pipeline(self.X_test, 'training', self.word_to_index, self.MAX_STRING_LEN)
+
 
         print('Indexing Y_train and Y_test dataset...', end = '                                  \r')
         self.Y_train_idx, self.index_to_category, self.num_of_categories = Y_to_indices(self.Y_train, is_idx_to_category = True, count_unique = True)
